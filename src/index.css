@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+th span {
+  display: inline-block;
+  font-family: monospace;
+  min-width: 3ch;
+}
