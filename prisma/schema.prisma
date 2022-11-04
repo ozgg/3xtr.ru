@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Corpus {
+  id         Int       @id @default(autoincrement())
+  userId     BigInt?   @map(name: "user_id")
+  createdAt  DateTime  @map(name: "created_at") @default(now())
+  updatedAt  DateTime  @map(name: "updated_at") @updatedAt
+  name       String    @db.VarChar(100)
+
+  textSamples TextSample[]
+
+  @@map("corpora")
+}
+
+model TextSample {
+  id         BigInt    @id @default(autoincrement())
+  createdAt  DateTime  @map(name: "created_at") @default(now())
+  corpus     Corpus    @relation(fields: [corpus_id], references: [id], onDelete: Cascade)
+  corpusId   Int       @map(name: "corpus_id")
+  body       String
+
+  nGrams  NGram[]
+
+  @@map("text_samples")
+}
+
+model NGram {
+  id        BigInt  @id @default(autoincrement())
+  corpus    Corpus  @relation(fields: [corpus_id], references: [id], onDelete: Cascade)
+  corpusId  Int     @map(name: "corpus_id")
+  n         Int     @db.SmallInt
+  body      String  @db.VarChar(10)
+  weight    Int     @default(1)
+
+  @@map("ngrams")
+  @@unique([corpus_id, body])
+  @@index([corpus_id, n, weight])
+}
