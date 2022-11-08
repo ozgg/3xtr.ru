@@ -18,6 +18,7 @@ model Corpus {
   name       String    @db.VarChar(100)
 
   textSamples TextSample[]
+  nGrams      NGram[]
 
   @@map("corpora")
 }
@@ -25,24 +26,22 @@ model Corpus {
 model TextSample {
   id         BigInt    @id @default(autoincrement())
   createdAt  DateTime  @map(name: "created_at") @default(now())
-  corpus     Corpus    @relation(fields: [corpus_id], references: [id], onDelete: Cascade)
+  corpus     Corpus    @relation(fields: [corpusId], references: [id], onDelete: Cascade)
   corpusId   Int       @map(name: "corpus_id")
   body       String
-
-  nGrams  NGram[]
 
   @@map("text_samples")
 }
 
 model NGram {
   id        BigInt  @id @default(autoincrement())
-  corpus    Corpus  @relation(fields: [corpus_id], references: [id], onDelete: Cascade)
+  corpus    Corpus  @relation(fields: [corpusId], references: [id], onDelete: Cascade)
   corpusId  Int     @map(name: "corpus_id")
   n         Int     @db.SmallInt
   body      String  @db.VarChar(10)
   weight    Int     @default(1)
 
   @@map("ngrams")
-  @@unique([corpus_id, body])
-  @@index([corpus_id, n, weight])
+  @@unique([corpusId, body])
+  @@index([corpusId, n, weight])
 }
