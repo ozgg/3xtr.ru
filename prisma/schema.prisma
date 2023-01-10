@@ -12,9 +12,9 @@ datasource db {
 
 model Corpus {
   id         Int       @id @default(autoincrement())
-  userId     BigInt?   @map(name: "user_id")
-  createdAt  DateTime  @map(name: "created_at") @default(now())
-  updatedAt  DateTime  @map(name: "updated_at") @updatedAt
+  userId     BigInt?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
   name       String    @db.VarChar(100)
 
   textSamples TextSample[]
@@ -25,23 +25,20 @@ model Corpus {
 
 model TextSample {
   id         BigInt    @id @default(autoincrement())
-  createdAt  DateTime  @map(name: "created_at") @default(now())
+  createdAt  DateTime  @default(now())
   corpus     Corpus    @relation(fields: [corpusId], references: [id], onDelete: Cascade)
-  corpusId   Int       @map(name: "corpus_id")
+  corpusId   Int
   body       String
-
-  @@map("text_samples")
 }
 
 model NGram {
   id        BigInt  @id @default(autoincrement())
   corpus    Corpus  @relation(fields: [corpusId], references: [id], onDelete: Cascade)
-  corpusId  Int     @map(name: "corpus_id")
+  corpusId  Int
   n         Int     @db.SmallInt
   body      String  @db.VarChar(10)
   weight    Int     @default(1)
 
-  @@map("ngrams")
   @@unique([corpusId, body])
   @@index([corpusId, n, weight])
 }
