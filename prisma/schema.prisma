@@ -31,8 +31,6 @@ model Corpus {
 
   textSamples TextSample[]
   nGrams      NGram[]
-
-  @@map("corpora")
 }
 
 model TextSample {
