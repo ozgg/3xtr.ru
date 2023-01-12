@@ -10,12 +10,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        Int        @id @default(autoincrement())
+  slug      String     @unique @db.VarChar(32)
+  email     String?    @unique @db.VarChar(100)
+  password  String     @db.VarChar(120)
+  name      String?    @db.VarChar(100)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  corpora   Corpus[]
+}
+
 model Corpus {
-  id         Int       @id @default(autoincrement())
+  id         BigInt    @id @default(autoincrement())
   userId     BigInt?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   name       String    @db.VarChar(100)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   textSamples TextSample[]
   nGrams      NGram[]
@@ -27,14 +39,14 @@ model TextSample {
   id         BigInt    @id @default(autoincrement())
   createdAt  DateTime  @default(now())
   corpus     Corpus    @relation(fields: [corpusId], references: [id], onDelete: Cascade)
-  corpusId   Int
+  corpusId   BigInt
   body       String
 }
 
 model NGram {
   id        BigInt  @id @default(autoincrement())
   corpus    Corpus  @relation(fields: [corpusId], references: [id], onDelete: Cascade)
-  corpusId  Int
+  corpusId  BigInt
   n         Int     @db.SmallInt
   body      String  @db.VarChar(10)
   weight    Int     @default(1)
