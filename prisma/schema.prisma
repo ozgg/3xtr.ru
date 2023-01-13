@@ -27,7 +27,7 @@ model Corpus {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   name       String    @db.VarChar(100)
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   textSamples TextSample[]
   nGrams      NGram[]
