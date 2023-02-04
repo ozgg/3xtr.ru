@@ -1,3 +1,5 @@
+import { Mutation} from "./mutation";
+
 export const resolvers = {
   Query: {
     corpora: async () => {
@@ -6,5 +8,6 @@ export const resolvers = {
     corpus: async () => {
       return null
     }
-  }
+  },
+  Mutation
 }

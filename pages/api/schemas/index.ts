@@ -6,6 +6,10 @@ export const typeDefs = gql`
         corpus(id: ID!): Corpus
     }
     
+    type Mutation {
+        signUp(slug: String!, password: String!): AuthPayload!
+    }
+    
     type User {
         id: ID!
         slug: String!
@@ -32,5 +36,14 @@ export const typeDefs = gql`
         n: Int!
         body: String!
         weight: Int!
+    }
+
+    type UserError {
+        message: String!
+    }
+
+    type AuthPayload {
+        userErrors: [UserError!]!
+        token: String
     }
 `

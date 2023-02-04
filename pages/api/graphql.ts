@@ -1,3 +1,4 @@
+import Cors from "micro-cors";
 import { ApolloServer } from "apollo-server-micro";
 import { typeDefs } from "./schemas";
 import { resolvers } from "./resolvers";
@@ -5,7 +6,7 @@ import { PrismaClient, Prisma } from "@prisma/client";
 import prisma from "../../lib/prisma";
 import { getUserFromToken } from "../../lib/helpers/getUserFromToken";
 
-interface Context {
+export interface Context {
   prisma: PrismaClient<
     Prisma.PrismaClientOptions,
     never,
@@ -34,4 +35,15 @@ export const config = {
   }
 }
 
-export default apolloServer.createHandler({path: '/api/graphql'})
+const cors = Cors();
+
+export default cors(async (req, res) => {
+  if (req.method === "OPTIONS") {
+    res.end()
+
+    return false
+  }
+
+  await apolloServer.start()
+  await apolloServer.createHandler({ path: "/api/graphql" })(req, res)
+});

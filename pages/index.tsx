@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Link from "next/link";
 
@@ -18,7 +17,7 @@ export default function Home() {
         </h1>
 
         <p className={styles.description}>
-          <Link href="/my/corpora">Corpora</Link>
+          <Link href="/join">Join</Link>
         </p>
       </main>
     </div>
