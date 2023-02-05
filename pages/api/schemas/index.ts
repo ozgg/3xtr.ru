@@ -7,6 +7,7 @@ export const typeDefs = gql`
     }
     
     type Mutation {
+        corpusCreate(name: String!, personal: Boolean!, shared: Boolean!): CorpusPayload!
         signUp(slug: String!, password: String!): AuthPayload!
     }
     
@@ -20,6 +21,8 @@ export const typeDefs = gql`
         id: ID!
         user: User
         name: String!
+        personal: Boolean!
+        shared: Boolean!
         textSamples: [TextSample!]!
         nGrams: [NGram!]!
     }
@@ -45,5 +48,10 @@ export const typeDefs = gql`
     type AuthPayload {
         userErrors: [UserError!]!
         token: String
+    }
+    
+    type CorpusPayload {
+        userErrors: [UserError!]!
+        id: ID
     }
 `

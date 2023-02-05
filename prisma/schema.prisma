@@ -31,6 +31,7 @@ model Corpus {
   name       String    @db.VarChar(100)
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   personal   Boolean   @default(false)
+  shared     Boolean   @default(false)
 
   textSamples TextSample[]
   nGrams      NGram[]

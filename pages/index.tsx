@@ -1,8 +1,14 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [token, setToken] = useState('')
+  useEffect(() => {
+    setToken(String(localStorage.getItem('token')))
+  }, [])
+
   return (
     <div className={styles.container}>
       <Head>
@@ -17,7 +23,8 @@ export default function Home() {
         </h1>
 
         <p className={styles.description}>
-          <Link href="/join">Join</Link>
+          {!token && <Link href="/join">Join</Link>}
+          {token && <Link href="/my/corpora">Corpora</Link>}
         </p>
       </main>
     </div>

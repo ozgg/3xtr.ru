@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { useMutation, gql } from "@apollo/client";
 import { FormEvent, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
 
 const SIGNUP = gql`
     mutation SignUp(
@@ -20,6 +21,7 @@ const JoinPage: NextPage = () => {
   const [signUp, { data, loading }] = useMutation(SIGNUP)
   const slugRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
@@ -41,6 +43,7 @@ const JoinPage: NextPage = () => {
       }
       if (data.signUp.token) {
         localStorage.setItem("token", data.signUp.token);
+        router.push('/')
       }
     }
   }, [data])
@@ -53,12 +56,12 @@ const JoinPage: NextPage = () => {
           <legend>Credentials</legend>
 
           <label>
-            <input name="slug" required={true} ref={slugRef}/>
+            <input name="slug" required={true} ref={slugRef} minLength={2} maxLength={16} pattern="^[A-Za-z0-9_]{2,16}$"/>
             <span>Login</span>
           </label>
 
           <label>
-            <input type="password" name="password" required={true} ref={passwordRef}/>
+            <input type="password" name="password" required={true} ref={passwordRef} maxLength={70} minLength={4}/>
             <span>Password</span>
           </label>
 
