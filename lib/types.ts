@@ -3,7 +3,9 @@ export type CorpusType = {
   userId?: number
   createdAt: string
   updatedAt: string
-  name: string
+  name: string,
+  personal: boolean,
+  shared: boolean
 }
 
 export type RequestEntityParams = {

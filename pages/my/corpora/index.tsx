@@ -5,19 +5,17 @@ import { makeSerializable } from "../../../lib/util";
 import { CorpusType } from "../../../lib/types";
 import { FormEvent, useEffect, useRef } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { router } from "next/client";
+import { useRouter } from "next/router";
 
 const CORPORA = gql`
-    mutation CorpusCreate(
-        $name: String!,
-        $personal: Boolean!,
-        $shared: Boolean!
-    ) {
-        corpusCreate(name: $name, personal: $personal, shared: $shared) {
+    mutation CorpusCreate($corpus: CorpusInput) {
+        corpusCreate(corpus: $corpus) {
             userErrors {
                 message
             }
-            id
+            corpus {
+                id
+            }
         }
     }
 `
@@ -25,6 +23,7 @@ const CORPORA = gql`
 const MyCorporaPage: NextPage<{ corpora: CorpusType[] }> = (props) => {
   const { corpora } = props
   const [corpusCreate, { data, loading }] = useMutation(CORPORA)
+  const router = useRouter()
 
   const nameRef = useRef<HTMLInputElement>(null)
   const personalRef = useRef<HTMLInputElement>(null)
@@ -45,7 +44,7 @@ const MyCorporaPage: NextPage<{ corpora: CorpusType[] }> = (props) => {
     const shared = sharedRef.current?.checked
 
     corpusCreate({
-      variables: { name, personal, shared }
+      variables: { corpus: { name, personal, shared } }
     })
   }
 
@@ -54,8 +53,8 @@ const MyCorporaPage: NextPage<{ corpora: CorpusType[] }> = (props) => {
       if (data.corpusCreate.userErrors.length) {
         console.log(data.corpusCreate.userErrors);
       }
-      if (data.corpusCreate.id) {
-        router.push(`/my/corpora/${data.corpusCreate.id}`)
+      if (data.corpusCreate.corpus) {
+        router.push(`/my/corpora/${data.corpusCreate.corpus.id}`)
       }
     }
   }, [data])
@@ -69,7 +68,7 @@ const MyCorporaPage: NextPage<{ corpora: CorpusType[] }> = (props) => {
         <fieldset>
           <div>
             <label>
-              <input name="name" required={true} ref={nameRef}/>
+              <input name="name" required={true} maxLength={100} ref={nameRef}/>
               <span>Name</span>
             </label>
           </div>

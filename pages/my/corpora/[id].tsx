@@ -9,6 +9,8 @@ const MyCorpusPage: NextPage<{ corpus: CorpusType }> = (props) => {
   return (
     <>
       <h1>{corpus.name}</h1>
+      <p>{corpus.personal && 'Personal'}</p>
+      <p>{corpus.shared && 'Shared'}</p>
     </>
   )
 }
