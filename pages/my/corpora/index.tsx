@@ -45,6 +45,8 @@ const MyCorporaPage: NextPage<{ corpora: CorpusType[] }> = (props) => {
 
     corpusCreate({
       variables: { corpus: { name, personal, shared } }
+    }).then(() => {
+      console.log('Done')
     })
   }
 

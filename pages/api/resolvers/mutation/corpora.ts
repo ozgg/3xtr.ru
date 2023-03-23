@@ -32,7 +32,7 @@ export const corporaResolvers = {
 
     const { name, personal, shared } = corpus
     if (name.length < 1 || name.length > 100) {
-      userErrors.push({ message: 'Name cannot be shorder than 1 or longer than 100 characters' })
+      userErrors.push({ message: 'Name cannot be shorter than 1 or longer than 100 characters' })
     }
 
     if (userErrors.length < 1) {

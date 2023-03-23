@@ -1,4 +1,4 @@
-import { Mutation} from "./mutation";
+import { Mutation } from "./mutation";
 
 export const resolvers = {
   Query: {

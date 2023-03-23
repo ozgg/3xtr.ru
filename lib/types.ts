@@ -8,6 +8,12 @@ export type CorpusType = {
   shared: boolean
 }
 
+export type TextSampleType = {
+  id: number
+  corpusId: number
+  body: string
+}
+
 export type RequestEntityParams = {
   id: string
 }

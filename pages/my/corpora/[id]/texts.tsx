@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextPage } from "next";
-import prisma from "../../../lib/prisma";
-import { makeSerializable } from "../../../lib/util";
-import { CorpusType } from "../../../lib/types";
+import prisma from "../../../../lib/prisma";
+import { makeSerializable } from "../../../../lib/util";
+import { CorpusType } from "../../../../lib/types";
 
 const MyCorpusPage: NextPage<{ corpus: CorpusType }> = (props) => {
   const { corpus } = props
@@ -11,6 +11,8 @@ const MyCorpusPage: NextPage<{ corpus: CorpusType }> = (props) => {
       <h1>{corpus.name}</h1>
       <p>{corpus.personal && 'Personal'}</p>
       <p>{corpus.shared && 'Shared'}</p>
+      <p>Created at {corpus.createdAt}</p>
+      <p>Updated at {corpus.updatedAt}</p>
     </>
   )
 }
